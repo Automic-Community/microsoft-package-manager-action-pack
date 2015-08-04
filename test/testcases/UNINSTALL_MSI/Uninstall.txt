@@ -1,0 +1,31 @@
+*** Settings ***
+Documentation     NOTE:
+...               add note here
+Suite Setup       Suite Setup
+Force Tags        UNINSTALL_MSI    win
+Test Template     Uninstall Msi Template
+Resource          ../../resources/keywords.txt
+
+*** Test Cases ***    NAME                         PATH               RETURN CODE    RETURN STATUS
+Uninstall             FirefoxESR-31.3.0-ach.msi    ${_WORKING_DIR}    0              ${ENDED_OK - ended normally}
+
+Uninstall Not Exist
+                      NotExist.msi                 ${_WORKING_DIR}    0              FAULT_POST_PROCESSING - error in post processing.
+
+*** Keywords ***
+Uninstall Msi Template
+    [Arguments]    ${name}    ${path}    ${returnCode}    ${returnStatus}
+    Init Action    ${ACTION_INSTALL_MSI}
+    Action Set    ${PRT_INSTALL_MSI_PACKAGE_NAME}    ${name}
+    Action Set    ${PRT_INSTALL_MSI_PACKAGE_PATH}    ${path}
+    Action Set    ${PRT_INSTALL_MSI_ADMIN_INSTALL}    NO
+    Action Set Timeout    600
+    Action Execute
+    Init Action    ${ACTION_UNINSTALL_MSI}
+    Action Set    ${PRT_UNINSTALL_MSI_PACKAGE_NAME}    ${name}
+    Action Set    ${PRT_UNINSTALL_MSI_PACKAGE_PATH}    ${path}
+    Action Execute
+    Action Report Should Be Found
+    Action Return Code Should Be    ${returnCode}
+    Action Return Status Should Be    ${returnStatus}
+    #Action Return Variable Should Be    &UC4RB_OUT_VARA#    ${outVara}
