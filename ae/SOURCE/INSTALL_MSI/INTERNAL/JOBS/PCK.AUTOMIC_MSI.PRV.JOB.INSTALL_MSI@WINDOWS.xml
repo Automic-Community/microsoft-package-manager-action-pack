@@ -144,7 +144,6 @@ exit /b 1
 
 start /wait %SYSTEMROOT%\system32\msiexec.exe &INSTALL_OPT# "&PACKAGE_NAME_AND_PATH#" /qn &RESTART# /l msi_installation_log-&$RUNID#.log
 
-
 set returncode=%errorlevel%
 if %returncode% EQU 0 (
 echo MSI Installation started
