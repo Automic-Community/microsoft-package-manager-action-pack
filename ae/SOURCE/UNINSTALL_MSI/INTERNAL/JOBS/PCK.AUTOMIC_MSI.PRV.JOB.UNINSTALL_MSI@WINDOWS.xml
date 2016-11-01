@@ -159,19 +159,24 @@ exit /b 0
 <LoginFsc/>
 </OUTPUTSCAN>
 <POST_SCRIPT mode="1" replacementmode="1" state="1">
-<OSCRI><![CDATA[:SET &HND# = PREP_PROCESS_REPORT("JOBS",,"REP","MSI*")
+<OSCRI><![CDATA[:SET &REMOVING_SUCCESS# = 'NO'
+
+:SET &HND# = PREP_PROCESS_REPORT("JOBS",,"REP","MSI*Removal completed successfully.*")
 :PROCESS &HND#
-:  SET &RET_LINE# = GET_PROCESS_LINE(&HND#)
-:  P &RET_LINE#
-:  SET &RET# = STR_FIND(&RET_LINE#,"Removal completed successfully.")
-:  IF &RET# <> 0
-:    P "Removal completed successfully."
-:    EXIT 0
-:  ENDIF
+:  P "Removal completed successfully."
+:  SET &REMOVING_SUCCESS# = 'YES'
 :ENDPROCESS
 :CLOSE_PROCESS &HND#
-:P "UnInstallation failed"
-:EXIT 1]]></OSCRI>
+
+:IF &REMOVING_SUCCESS# = 'NO'
+:  P "Removal failed."
+!  IF current status is END_OK we should correct it
+:  SET &RET# = GET_UC_OBJECT_STATUS(,,"RETCODE")
+:  IF &RET# = 0
+:    MODIFY_STATE STATUS_TEXT="Removal failed."
+:    MODIFY_STATE RETCODE=1
+:  ENDIF
+:ENDIF]]></OSCRI>
 </POST_SCRIPT>
 <DOCU_Docu state="1" type="text">
 <DOC/>

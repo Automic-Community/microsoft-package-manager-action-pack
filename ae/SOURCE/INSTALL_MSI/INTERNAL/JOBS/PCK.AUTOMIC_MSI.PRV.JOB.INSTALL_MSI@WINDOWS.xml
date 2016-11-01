@@ -165,24 +165,24 @@ exit /b 0
 <LoginFsc/>
 </OUTPUTSCAN>
 <POST_SCRIPT mode="1" replacementmode="1" state="1">
-<OSCRI><![CDATA[:SET &HND# = PREP_PROCESS_REPORT("JOBS",,"REP","MSI*")
+<OSCRI><![CDATA[:SET &INSTALLING_SUCCESS# = 'NO'
+
+:SET &HND# = PREP_PROCESS_REPORT("JOBS",,"REP","MSI*completed successfully.*")
 :PROCESS &HND#
-:  SET &RET_LINE# = GET_PROCESS_LINE(&HND#)
-:  P &RET_LINE#
-:  SET &RET# = STR_FIND(&RET_LINE#,"Installation completed successfully.")
-:  IF &RET# <> 0
-:    P "Installation completed successfully."
-:    EXIT 0
-:  ENDIF
-:  SET &RET# = STR_FIND(&RET_LINE#,"Configuration completed successfully.")
-:  IF &RET# <> 0
-:    P "Installation completed successfully."
-:    EXIT 0
-:  ENDIF
+:  P "Installation completed successfully."
+:  SET &INSTALLING_SUCCESS# = 'YES'
 :ENDPROCESS
 :CLOSE_PROCESS &HND#
-:P "Installation failed"
-:EXIT 1]]></OSCRI>
+
+:IF &INSTALLING_SUCCESS# = 'NO'
+:  P "Installation failed."
+!  IF current status is END_OK we should correct it
+:  SET &RET# = GET_UC_OBJECT_STATUS(,,"RETCODE")
+:  IF &RET# = 0
+:    MODIFY_STATE STATUS_TEXT="Installation failed."
+:    MODIFY_STATE RETCODE=1
+:  ENDIF
+:ENDIF]]></OSCRI>
 </POST_SCRIPT>
 <DOCU_Docu state="1" type="text">
 <DOC/>
