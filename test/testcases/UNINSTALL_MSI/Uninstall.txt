@@ -10,7 +10,7 @@ Resource          ../../resources/keywords.txt
 Uninstall             FirefoxESR-31.3.0-ach.msi    ${_WORKING_DIR}    0              ${ENDED_OK - ended normally}
 
 Uninstall Not Exist
-                      NotExist.msi                 ${_WORKING_DIR}    0              FAULT_POST_PROCESSING - error in post processing.
+                      NotExist.msi                 ${_WORKING_DIR}    1              ${ENDED_NOT_OK - aborted}
 
 *** Keywords ***
 Uninstall Msi Template

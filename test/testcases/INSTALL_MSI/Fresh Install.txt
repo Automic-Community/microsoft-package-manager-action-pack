@@ -11,7 +11,7 @@ Fresh Install Firefox
                       FirefoxESR-31.3.0-ach.msi    ${_WORKING_DIR}    0              ${ENDED_OK - ended normally}
 
 Fresh Install Not Exist
-                      NotExist.msi                 ${_WORKING_DIR}    0              FAULT_POST_PROCESSING - error in post processing.
+                      NotExist.msi                 ${_WORKING_DIR}    1              ${ENDED_NOT_OK - aborted}
 
 *** Keywords ***
 Install Msi Template
