@@ -7,7 +7,8 @@ Test Template     Uninstall Msi Template
 Resource          ../../resources/keywords.txt
 
 *** Test Cases ***    NAME                         PATH               RETURN CODE    RETURN STATUS
-Uninstall             FirefoxESR-31.3.0-ach.msi    ${_WORKING_DIR}    0              ${ENDED_OK - ended normally}
+Uninstall             [Tags]                       SMOKE_TEST
+                      FirefoxESR-31.3.0-ach.msi    ${_WORKING_DIR}    0              ${ENDED_OK - ended normally}
 
 Uninstall Not Exist
                       NotExist.msi                 ${_WORKING_DIR}    1              ${ENDED_NOT_OK - aborted}
